@@ -1,0 +1,32 @@
+.ground{
+   width: auto;
+}
+
+.back {
+   margin: 0 auto;
+   width : 200px;
+   height: 500px;
+   border: 1px solid skyblue;
+   /* transform-origin: bottom; */
+   /* transform: scaleY(1); */
+   /* bottom: 0px; */
+   /* position: static; */
+   overflow: hidden;
+
+}
+
+.back_inner{
+   width : 200px;
+   height: 500px;
+   /* position: absolute; */
+   bottom: 0px;
+   /* top: 250px; */
+   /* transform-origin: bottom;
+   transform: scaleY(1); */
+   overflow: hidden;
+   /* padding-top: 40px; */
+   /* clip-path: url(#__lottie_element_13); */
+   display: flex;
+   flex-direction: column-reverse;
+}
+

@@ -3,6 +3,7 @@ import { useSpring, animated } from "@react-spring/web";
 
 import styles from "../../styles.module.css";
 import Percent from "../../asset/Percent";
+import { motion } from "framer-motion";
 
 const AnimFeTurbulence = animated("feTurbulence");
 const AnimFeDisplacementMap = animated("feDisplacementMap");
@@ -12,16 +13,21 @@ const Wave = () => {
   const [{ freq, factor }] = useSpring(
     () => ({
       reverse: open,
-      from: { factor: 5, freq: "0.00399, 0.01993999" },
-      to: { factor: 165, freq: "0.00399, 0.00029999" },
+      from: { factor: 5, freq: "0.01399, 0.01993999" },
+      to: { factor: 165, freq: "0.01399, 0.00029999" },
       config: { duration: 800 },
     }),
     [open]
   );
 
+  // value는 1~10이 10% ~ 100%
+
   const innerW = 141;
-  const value = 1;
-  const innerH = 25 * value;
+  const value = 8;
+  const innerH = 20;
+  // let topV =
+  const svgAreaW = innerW - value * -0.5 * innerW + "px";
+  const svgAreaH = innerH - value * 0.1 + "px";
 
   // toggle(!open);
   setTimeout(() => {
@@ -39,15 +45,17 @@ const Wave = () => {
 
   const svg: any = {
     // width: "fit-content",
-    position: "relative",
-    height: innerH + value,
+    position: "absolute",
+    float: "left",
+    height: innerH + 10,
     // 길이 변화 여기로 ****
-    width: innerW + 10,
+    width: svgAreaW + 30,
+    bottom: innerH * value - 10,
   };
 
   const container: any = {
     alignItems: "center",
-    height: "160px",
+    height: "200px",
     justifyContent: "center",
     width: Number(innerW + 2) + "px",
     border: "1px solid red",
@@ -58,7 +66,8 @@ const Wave = () => {
 
     bottom: "0px",
     right: "0.1px",
-    height: innerH + 138 + value + "px",
+    // height: innerH + 138 + value + "px",
+    height: "200px",
     width: Number(innerW) + "px",
     margin: "0 auto",
     background: "white",
@@ -68,47 +77,51 @@ const Wave = () => {
 
   const percent_inner: any = {
     position: "absolute",
-    height: innerH + 122 * value + "px",
+    bottom: 0,
+    height: innerH * value + "px",
+    // width: innerW + value + "px",
     width: innerW + value + "px",
     background: "pink",
-    bottom: "0px",
+    // top: innerH - value + "px",
   };
 
-  const svgW = 250;
-  const svgH = 36 * value;
+  const svgW = svgAreaW;
+  const svgH = svgAreaH;
 
-  const view = "0 0 220 36";
+  const view = `0 0 ${svgW} ${svgH}`;
 
   return (
-    <div style={{ ...body }}>
-      <div style={{ ...block }}>
-        <div style={{ ...container }}>
-          <div style={{ ...percent }}>
-            <div style={{ ...percent_inner }} />
-            <animated.svg style={{ ...svg }} viewBox={view}>
-              <defs>
-                <filter id="water">
-                  <AnimFeTurbulence
-                    type="fractalNoise"
-                    baseFrequency={freq}
-                    numOctaves="2"
-                    result="TURB"
-                    seed="8"
-                  />
-                  <AnimFeDisplacementMap
-                    xChannelSelector="R"
-                    yChannelSelector="G"
-                    in="SourceGraphic"
-                    in2="TURB"
-                    result="DISP"
-                    scale={factor}
-                  />
-                </filter>
-              </defs>
-              <g filter="url(#water)">
-                <Percent w={svgW} h={svgH} />
-              </g>
-            </animated.svg>
+    <div className="page">
+      <div style={{ ...body }}>
+        <div style={{ ...block }}>
+          <div style={{ ...container }}>
+            <div style={{ ...percent }}>
+              <div style={{ ...percent_inner }} />
+              <animated.svg style={{ ...svg }} viewBox={view}>
+                <defs>
+                  <filter id="water">
+                    <AnimFeTurbulence
+                      type="fractalNoise"
+                      baseFrequency={freq}
+                      numOctaves="2"
+                      result="TURB"
+                      seed="8"
+                    />
+                    <AnimFeDisplacementMap
+                      xChannelSelector="R"
+                      yChannelSelector="G"
+                      in="SourceGraphic"
+                      in2="TURB"
+                      result="DISP"
+                      scale={factor}
+                    />
+                  </filter>
+                </defs>
+                <g filter="url(#water)">
+                  <Percent w={svgW} h={svgH} />
+                </g>
+              </animated.svg>
+            </div>
           </div>
         </div>
       </div>
